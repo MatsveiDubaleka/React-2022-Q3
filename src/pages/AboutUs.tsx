@@ -1,10 +1,13 @@
 import React from 'react';
+import { Header } from '../components/Header/Header';
+import { Footer } from '../components/Footer/Footer';
 
 const AboutUs = () => {
   return (
     <div>
+      <Header />
       <h2>About Us</h2>
-      <p>What should you know about us? Is Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda consequatur ex fuga mollitia quaerat reprehenderit rerum ullam velit veniam. Molestiae?</p>
+      <Footer />
     </div>
   );
 };
