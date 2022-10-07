@@ -4,6 +4,7 @@ import { Flex } from '../../styles/Flex';
 import { IProduct } from '../../interfaces/IProduct';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import { Paper } from '@mui/material';
 
 interface IProducts {
   products: IProduct[];
@@ -26,20 +27,22 @@ export class Main extends Component<PropsWithChildren, IProducts> {
 
     getProducts();
     return (
-      <Flex direction={'column'} gap={'50px'}>
-        <h2>Main</h2>
-        <Flex direction={'row'} style={{ 'flex-wrap': 'wrap' }}>
-          {this.state.products ? (
-            this.state.products.map((product: IProduct, index: number) => {
-              return <Product key={index} product={product} />;
-            })
-          ) : (
-            <Box sx={{ display: 'flex' }}>
-              <CircularProgress />
-            </Box>
-          )}
+      <Paper elevation={0}>
+        <Flex direction={'column'} gap={'50px'}>
+          <h2>Main</h2>
+          <Flex direction={'row'} style={{ 'flex-wrap': 'wrap' }} gap={'50px'}>
+            {this.state.products ? (
+              this.state.products.map((product: IProduct, index: number) => {
+                return <Product key={index} product={product} />;
+              })
+            ) : (
+              <Box sx={{ display: 'flex' }}>
+                <CircularProgress />
+              </Box>
+            )}
+          </Flex>
         </Flex>
-      </Flex>
+      </Paper>
     );
   }
 }
