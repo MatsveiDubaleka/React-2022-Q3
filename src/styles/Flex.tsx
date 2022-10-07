@@ -9,11 +9,13 @@ interface IFlex {
   justify?: string;
   gap?: string;
   style?: object;
+  wrap?: string;
   children: React.ReactNode;
 }
 
 export const StyledFlex = styled.div<IFlex>`
   display: flex;
+  flex-wrap: ${({ wrap }) => wrap || 'nowrap'};
   flex-direction: ${({ direction }) => direction || 'row'};
   align-items: ${({ align }) => align || 'center'};
   justify-content: ${({ justify }) => justify || 'center'};
