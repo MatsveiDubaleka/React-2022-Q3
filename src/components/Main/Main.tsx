@@ -28,9 +28,9 @@ export class Main extends Component<PropsWithChildren, IProducts> {
     getProducts();
     return (
       <Paper elevation={0}>
-        <Flex direction={'column'} gap={'50px'}>
+        <Flex direction={'column'} gap={'50px'} wrap={'wrap'}>
           <h2>Main</h2>
-          <Flex direction={'row'} style={{ 'flex-wrap': 'wrap' }} gap={'50px'}>
+          <Flex direction={'row'} gap={'50px'} wrap={'wrap'}>
             {this.state.products ? (
               this.state.products.map((product: IProduct, index: number) => {
                 return <Product key={index} product={product} />;
