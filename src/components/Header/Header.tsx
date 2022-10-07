@@ -42,6 +42,11 @@ export const Header = () => {
                 Random
               </Link>
             </li>
+            <li>
+              <Link to="/card" style={{ color: 'bisque' }}>
+                Create Card
+              </Link>
+            </li>
           </StyledUl>
           <h1>Header</h1>
           <SearchBar />
