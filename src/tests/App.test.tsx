@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { SearchBar } from './components/Header/SearchBar';
-import { Main } from './components/Main/Main';
+import { SearchBar } from '../components/Header/SearchBar';
+import { Main } from '../components/Main/Main';
 
 describe('SearchBar', () => {
   test('Finds label search', () => {
