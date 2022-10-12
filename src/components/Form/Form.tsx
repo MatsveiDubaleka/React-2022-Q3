@@ -1,68 +1,184 @@
 import React, { Component, PropsWithChildren } from 'react';
-import {
-  Button,
-  TextField,
-  Checkbox,
-  RadioGroup,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Select,
-} from '@mui/material';
+import { Button } from '@mui/material';
 import { Flex } from '../../styles/Flex';
+import { Card } from './Card/Card';
 
-export class Form extends Component<PropsWithChildren> {
+interface ICard {
+  name: string;
+  surname: string;
+  age: string;
+  date: string;
+  file: string;
+  radio: string;
+  checkbox: boolean;
+  select: string;
+}
+
+type IFormElements = {
+  name: HTMLInputElement;
+  surname: HTMLInputElement;
+  age: HTMLInputElement;
+  date: HTMLInputElement;
+  file: HTMLInputElement;
+  radio: HTMLInputElement;
+  checkbox: HTMLInputElement;
+  select: HTMLSelectElement;
+};
+
+type IData = {
+  validation: boolean;
+  data: Array<ICard>;
+};
+
+export class Form extends Component<PropsWithChildren, IData> {
   constructor(props: PropsWithChildren) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.state = {
+      validation: false,
+      data: [],
+    };
   }
 
-  inputRef = React.createRef<HTMLInputElement>();
-  fileInput = React.createRef<HTMLInputElement>();
+  formInput = React.createRef<HTMLFormElement>();
 
-  handleSubmit(e: React.FormEvent) {
+  async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    const { name, surname, age, date, file, radio, checkbox, select } = this.formInput
+      .current as HTMLFormElement & IFormElements;
+
+    const cardValue = {
+      name: name?.value,
+      surname: surname?.value,
+      age: age?.value,
+      date: date?.value,
+      file: file?.value,
+      radio: radio?.value,
+      checkbox: checkbox?.checked,
+      select: select?.value,
+    };
+
+    await this.setState(({ data }: IData) => {
+      const res = data.concat(cardValue);
+      return { data: [...res] };
+    });
+
+    alert('Data was saved');
+  }
+
+  checkValidation(event: React.ChangeEvent<HTMLInputElement>) {
+    console.log(event.target.value);
+    if (event.target.value === '') {
+      console.log(event.target.value);
+      console.log(this.state.validation);
+    } else {
+      this.setState({
+        validation: true,
+      });
+    }
   }
 
   render() {
     return (
       <>
-        <form action="" onSubmit={this.handleSubmit}>
-          <Flex direction={'column'} gap={'50px'}>
-            <TextField type="text" ref={this.inputRef} />
-            <TextField type="date" ref={this.inputRef} />
-            <TextField type="select" ref={this.inputRef} />
-            <input type="file" ref={this.fileInput} />
-            <Checkbox />
-            <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="demo-row-radio-buttons-group-label"
-              name="row-radio-buttons-group"
+        <form action="" ref={this.formInput} onSubmit={this.handleSubmit}>
+          <Flex direction="column" gap="50px">
+            <label>
+              Name:
+              <input
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Your name"
+                onChange={(e) => this.checkValidation(e)}
+              />
+            </label>
+            <label>
+              Surname:
+              <input
+                type="text"
+                name="surname"
+                id="surname"
+                placeholder="Your surname"
+                onChange={(e) => this.checkValidation(e)}
+              />
+            </label>
+            <label>
+              Age:
+              <input
+                type="number"
+                name="age"
+                id="age"
+                placeholder="Your age"
+                onChange={(e) => this.checkValidation(e)}
+              />
+            </label>
+            <label>
+              Date:
+              <input type="date" name="date" id="date" onChange={(e) => this.checkValidation(e)} />
+            </label>
+            <label>
+              Against War:
+              <input
+                type="radio"
+                value="positive"
+                name="radio"
+                id="war"
+                onChange={(e) => this.checkValidation(e)}
+              />
+              Agree War:
+              <input
+                type="radio"
+                value="negative"
+                name="radio"
+                id="war"
+                onChange={(e) => this.checkValidation(e)}
+              />
+            </label>
+            <label>
+              File:
+              <input type="file" name="file" id="file" onChange={(e) => this.checkValidation(e)} />
+            </label>
+            <label>
+              Checkbox:
+              <input
+                type="checkbox"
+                name="checkbox"
+                id="checkbox"
+                checked
+                onChange={(e) => this.checkValidation(e)}
+              />
+            </label>
+            <select name="select" id="select">
+              <option value="Man">Man</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+            <Button
+              type="submit"
+              onClick={(e) => e.preventDefault}
+              disabled={!this.state.validation}
+              variant="contained"
             >
-              <FormControlLabel value="female" control={<Radio />} label="Female" />
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
-              <FormControlLabel value="other" control={<Radio />} label="Other" />
-            </RadioGroup>
-            <FormControl>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Age"
-                sx={{ width: '100px' }}
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
-            <Button variant="contained">Submit</Button>
+              Submit
+            </Button>
           </Flex>
         </form>
+        {this.state.data.map((card: ICard, index: number) => (
+          <Card
+            key={index}
+            name={card.name}
+            surname={card.surname}
+            age={card.age}
+            date={card.date}
+            file={card.file}
+            radio={card.radio}
+            checkbox={card.checkbox}
+            select={card.select}
+          />
+        ))}
       </>
     );
   }
