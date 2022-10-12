@@ -60,19 +60,32 @@ export class Form extends Component<PropsWithChildren, IData> {
       select: select?.value,
     };
 
-    await this.setState(({ data }: IData) => {
-      const res = data.concat(cardValue);
-      return { data: [...res] };
-    });
-
-    alert('Data was saved');
+    if (this.checkFormValidation(cardValue)) {
+      await this.setState(({ data }: IData) => {
+        const res = data.concat(cardValue);
+        return { data: [...res] };
+      });
+      alert('Data was saved');
+    } else {
+      console.log('Form cant pass validation');
+    }
   }
 
-  checkValidation(event: React.ChangeEvent<HTMLInputElement>) {
-    console.log(event.target.value);
+  checkFormValidation(inputsArray: ICard) {
+    for (const input of Object.values(inputsArray)) {
+      if (input === '') {
+        console.log('Empty');
+        return false;
+      } else {
+        console.log(`${input}`, 'not empty');
+      }
+    }
+    return true;
+  }
+
+  checkInputValidation(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.value === '') {
       console.log(event.target.value);
-      console.log(this.state.validation);
     } else {
       this.setState({
         validation: true,
@@ -92,7 +105,7 @@ export class Form extends Component<PropsWithChildren, IData> {
                 name="name"
                 id="name"
                 placeholder="Your name"
-                onChange={(e) => this.checkValidation(e)}
+                onChange={(e) => this.checkInputValidation(e)}
               />
             </label>
             <label>
@@ -102,7 +115,7 @@ export class Form extends Component<PropsWithChildren, IData> {
                 name="surname"
                 id="surname"
                 placeholder="Your surname"
-                onChange={(e) => this.checkValidation(e)}
+                onChange={(e) => this.checkInputValidation(e)}
               />
             </label>
             <label>
@@ -112,12 +125,17 @@ export class Form extends Component<PropsWithChildren, IData> {
                 name="age"
                 id="age"
                 placeholder="Your age"
-                onChange={(e) => this.checkValidation(e)}
+                onChange={(e) => this.checkInputValidation(e)}
               />
             </label>
             <label>
               Date:
-              <input type="date" name="date" id="date" onChange={(e) => this.checkValidation(e)} />
+              <input
+                type="date"
+                name="date"
+                id="date"
+                onChange={(e) => this.checkInputValidation(e)}
+              />
             </label>
             <label>
               Against War:
@@ -126,7 +144,7 @@ export class Form extends Component<PropsWithChildren, IData> {
                 value="positive"
                 name="radio"
                 id="war"
-                onChange={(e) => this.checkValidation(e)}
+                onChange={(e) => this.checkInputValidation(e)}
               />
               Agree War:
               <input
@@ -134,12 +152,17 @@ export class Form extends Component<PropsWithChildren, IData> {
                 value="negative"
                 name="radio"
                 id="war"
-                onChange={(e) => this.checkValidation(e)}
+                onChange={(e) => this.checkInputValidation(e)}
               />
             </label>
             <label>
               File:
-              <input type="file" name="file" id="file" onChange={(e) => this.checkValidation(e)} />
+              <input
+                type="file"
+                name="file"
+                id="file"
+                onChange={(e) => this.checkInputValidation(e)}
+              />
             </label>
             <label>
               Checkbox:
@@ -148,7 +171,7 @@ export class Form extends Component<PropsWithChildren, IData> {
                 name="checkbox"
                 id="checkbox"
                 checked
-                onChange={(e) => this.checkValidation(e)}
+                onChange={(e) => this.checkInputValidation(e)}
               />
             </label>
             <select name="select" id="select">
