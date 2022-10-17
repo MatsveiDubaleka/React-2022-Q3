@@ -28,13 +28,12 @@ export class Main extends Component<PropsWithChildren, ICardProps> {
       headers: { Authorization: 'Bearer EYud6UvEvgXhu4FWP7yc' },
     };
 
-    console.log(baseUrl);
-
-    const response = await axios.request(options);
-
-    this.setState({ products: response.data.docs, isLoaded: true });
-
-    console.log(response.data.docs);
+    try {
+      const response = await axios.request(options);
+      this.setState({ products: response.data.docs, isLoaded: true });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   componentDidMount() {
