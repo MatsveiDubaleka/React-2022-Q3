@@ -4,7 +4,7 @@ import { Flex } from '../../styles/Flex';
 import { IProduct } from '../../interfaces/IProduct';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import { Paper } from '@mui/material';
+import axios from 'axios';
 
 interface IProducts {
   products: IProduct[];
@@ -19,30 +19,39 @@ export class Main extends Component<PropsWithChildren, IProducts> {
   }
 
   render() {
-    const getProducts = async () => {
-      await fetch('https://fakestoreapi.com/products')
-        .then((res) => res.json())
-        .then((json: IProduct[]) => this.setState({ products: json }));
+    const getData = async () => {
+      const options = {
+        method: 'GET',
+        url: 'https://the-one-api.dev/v2/character/?limit=20',
+        headers: { Authorization: 'Bearer EYud6UvEvgXhu4FWP7yc' },
+      };
+
+      await axios
+        .request(options)
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
     };
 
-    getProducts();
+    getData();
+
     return (
-      <Paper elevation={0}>
-        <Flex direction={'column'} gap={'50px'} wrap={'wrap'}>
-          <h2>Main</h2>
-          <Flex direction={'row'} gap={'50px'} wrap={'wrap'}>
-            {this.state.products ? (
-              this.state.products.map((product: IProduct, index: number) => {
-                return <Product key={index} product={product} />;
-              })
-            ) : (
-              <Box sx={{ display: 'flex' }}>
-                <CircularProgress />
-              </Box>
-            )}
-          </Flex>
+      <Flex>
+        <Flex direction={'row'} gap={'50px'} wrap={'wrap'}>
+          {this.state.products ? (
+            this.state.products.map((product, index: number) => {
+              return <Product key={index} />;
+            })
+          ) : (
+            <Box sx={{ display: 'flex' }}>
+              <CircularProgress />
+            </Box>
+          )}
         </Flex>
-      </Paper>
+      </Flex>
     );
   }
 }
