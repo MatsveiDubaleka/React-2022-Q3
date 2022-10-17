@@ -1,5 +1,4 @@
 import React from 'react';
-import { SearchBar } from './SearchBar';
 import styled from 'styled-components';
 import { Flex } from '../../styles/Flex';
 import { Link } from 'react-router-dom';
@@ -49,7 +48,6 @@ export const Header = () => {
             </li>
           </StyledUl>
           <h1>Header</h1>
-          <SearchBar />
         </HeaderWrapper>
       </header>
     </>
