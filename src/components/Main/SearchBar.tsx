@@ -6,11 +6,13 @@ import styled from 'styled-components';
 import { Flex } from '../../styles/Flex';
 
 const StyledSearchBar = styled(Flex)`
+  margin: 20px;
   align-items: center;
 `;
 
 interface IState {
   value?: string;
+  openedWindow: boolean;
 }
 
 interface IProps {
@@ -20,7 +22,10 @@ interface IProps {
 export class SearchBar extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    this.state = { value: '' };
+    this.state = {
+      value: '',
+      openedWindow: false,
+    };
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -53,7 +58,7 @@ export class SearchBar extends React.Component<IProps, IState> {
         <StyledSearchBar>
           <TextField
             id="outlined-search"
-            label="Search"
+            label="Persons of Lords of the Rings"
             type="search"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleChange(e)}
           />
