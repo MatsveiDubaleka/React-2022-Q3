@@ -1,13 +1,8 @@
 import React from 'react';
-import { IProduct } from '../../interfaces/IProduct';
 import { Flex } from '../../styles/Flex';
-import { Card, CardContent, Typography, CardMedia } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 
-interface ProductProps {
-  product: IProduct;
-}
-
-export const Product = ({ product }: ProductProps) => {
+export const Product = () => {
   return (
     <Card raised={true} sx={{ bgcolor: 'background.paper' }}>
       <CardContent>
@@ -18,26 +13,17 @@ export const Product = ({ product }: ProductProps) => {
           align={'flex-start'}
           justify={'space-between'}
         >
-          <Typography gutterBottom variant="h5" component="div">
-            {product.title}
-          </Typography>
+          <Typography gutterBottom variant="h5" component="div"></Typography>
 
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {product.id} {product.category.toUpperCase()}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Description: {product.description}
-          </Typography>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom></Typography>
 
-          <Typography variant="body1">Rating: {product.rating.rate}</Typography>
+          <Typography sx={{ mb: 1.5 }} color="text.secondary"></Typography>
 
-          <Typography variant="body2">Rating count:{product.rating.count}</Typography>
+          <Typography variant="body1"></Typography>
 
-          <CardMedia component="img" height="auto" image={product.image} alt={product.title} />
+          <Typography variant="body2"></Typography>
 
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Price: {product.price}$
-          </Typography>
+          <Typography sx={{ mb: 1.5 }} color="text.secondary"></Typography>
         </Flex>
       </CardContent>
     </Card>
