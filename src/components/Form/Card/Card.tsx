@@ -11,7 +11,7 @@ interface ICard {
   select: string;
 }
 
-export const Card = (props: ICard) => {
+export const Card: React.FC<ICard> = (props) => {
   return (
     <>
       <p>Name: {props.name}</p>
