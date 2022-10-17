@@ -1,20 +1,23 @@
 import React, { Component, PropsWithChildren } from 'react';
 import { Product } from './Product';
 import { Flex } from '../../styles/Flex';
-import { IProduct } from '../../interfaces/IProduct';
+import { ICard } from './../../interfaces/ICard';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import axios from 'axios';
+import { SearchBar } from './SearchBar';
 
-interface IProducts {
-  products: IProduct[];
+interface ICardProps {
+  products: ICard[];
+  isLoaded: boolean;
 }
 
-export class Main extends Component<PropsWithChildren, IProducts> {
+export class Main extends Component<PropsWithChildren, ICardProps> {
   constructor(props: PropsWithChildren) {
     super(props);
     this.state = {
       products: [],
+      isLoaded: false,
     };
   }
 
@@ -39,19 +42,22 @@ export class Main extends Component<PropsWithChildren, IProducts> {
     getData();
 
     return (
-      <Flex>
-        <Flex direction={'row'} gap={'50px'} wrap={'wrap'}>
-          {this.state.products ? (
-            this.state.products.map((product, index: number) => {
-              return <Product key={index} />;
-            })
-          ) : (
-            <Box sx={{ display: 'flex' }}>
-              <CircularProgress />
-            </Box>
-          )}
+      <>
+        <Flex>
+          <SearchBar />
+          <Flex direction={'row'} gap={'50px'} wrap={'wrap'}>
+            {this.state.products ? (
+              this.state.products.map((product, index: number) => {
+                return <Product key={index} />;
+              })
+            ) : (
+              <Box sx={{ display: 'flex' }}>
+                <CircularProgress />
+              </Box>
+            )}
+          </Flex>
         </Flex>
-      </Flex>
+      </>
     );
   }
 }
