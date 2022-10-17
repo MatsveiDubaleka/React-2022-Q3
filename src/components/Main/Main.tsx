@@ -2,8 +2,6 @@ import React, { Component, PropsWithChildren } from 'react';
 import { Product } from './Product';
 import { Flex } from '../../styles/Flex';
 import { ICard } from './../../interfaces/ICard';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 import axios from 'axios';
 import { SearchBar } from './SearchBar';
 
@@ -21,43 +19,43 @@ export class Main extends Component<PropsWithChildren, ICardProps> {
     };
   }
 
-  render() {
-    const getData = async () => {
-      const options = {
-        method: 'GET',
-        url: 'https://the-one-api.dev/v2/character/?limit=20',
-        headers: { Authorization: 'Bearer EYud6UvEvgXhu4FWP7yc' },
-      };
-
-      await axios
-        .request(options)
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
+  getData = async (regex = '') => {
+    let baseUrl = 'https://the-one-api.dev/v2/character/?limit=20';
+    !regex ? baseUrl : (baseUrl = `https://the-one-api.dev/v2/character/?name=/${regex}/i`);
+    const options = {
+      method: 'GET',
+      url: baseUrl,
+      headers: { Authorization: 'Bearer EYud6UvEvgXhu4FWP7yc' },
     };
 
-    getData();
+    console.log(baseUrl);
 
+    const response = await axios.request(options);
+
+    this.setState({ products: response.data.docs, isLoaded: true });
+
+    console.log(response.data.docs);
+  };
+
+  componentDidMount() {
+    this.getData();
+  }
+
+  render() {
     return (
-      <>
-        <Flex>
-          <SearchBar />
+      <Flex direction={'column'}>
+        <SearchBar getData={this.getData} />
+
+        {!this.state.isLoaded ? (
+          <div>Loading...</div>
+        ) : (
           <Flex direction={'row'} gap={'50px'} wrap={'wrap'}>
-            {this.state.products ? (
-              this.state.products.map((product, index: number) => {
-                return <Product key={index} />;
-              })
-            ) : (
-              <Box sx={{ display: 'flex' }}>
-                <CircularProgress />
-              </Box>
-            )}
+            {this.state.products.map((card: ICard, index: number) => (
+              <Product id={card.id} race={card.race} name={card.name} key={index} />
+            ))}
           </Flex>
-        </Flex>
-      </>
+        )}
+      </Flex>
     );
   }
 }
