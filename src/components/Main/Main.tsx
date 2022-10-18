@@ -1,9 +1,10 @@
 import React, { Component, PropsWithChildren } from 'react';
-import { Product } from './Product';
 import { Flex } from '../../styles/Flex';
 import { ICard } from './../../interfaces/ICard';
 import axios from 'axios';
 import { SearchBar } from './SearchBar';
+import CircularProgress from '@mui/material/CircularProgress';
+import Product from './Product';
 
 interface ICardProps {
   products: ICard[];
@@ -31,13 +32,16 @@ export class Main extends Component<PropsWithChildren, ICardProps> {
     try {
       const response = await axios.request(options);
       this.setState({ products: response.data.docs, isLoaded: true });
+      console.log(response.data.docs[0]);
     } catch (error) {
       console.log(error);
     }
   };
 
   componentDidMount() {
-    this.getData();
+    setTimeout(() => {
+      this.getData();
+    }, 1000);
   }
 
   render() {
@@ -46,11 +50,11 @@ export class Main extends Component<PropsWithChildren, ICardProps> {
         <SearchBar getData={this.getData} />
 
         {!this.state.isLoaded ? (
-          <div>Loading...</div>
+          <CircularProgress color="success" />
         ) : (
           <Flex direction={'row'} gap={'50px'} wrap={'wrap'}>
-            {this.state.products.map((card: ICard, index: number) => (
-              <Product id={card.id} race={card.race} name={card.name} key={index} />
+            {this.state.products.map((card: ICard) => (
+              <Product key={card._id} {...card} />
             ))}
           </Flex>
         )}
