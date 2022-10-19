@@ -3,18 +3,20 @@ import { Flex } from '../../styles/Flex';
 import { Button, Card, CardContent, Typography, Modal, Box } from '@mui/material';
 import { ICard } from '../../interfaces/ICard';
 import styled from 'styled-components';
+import { Link, NavLink } from 'react-router-dom';
 
 interface IProps {
   openModal: boolean;
 }
 
 const StyledBox = styled(Box)`
+  padding: 20px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.9);
   border: 2px solid #000;
   boxshadow: 24;
   p: 4;
@@ -29,7 +31,8 @@ export default class Product extends Component<ICard, IProps> {
   }
 
   render() {
-    const { birth, death, name } = this.props;
+    const { _id, birth, death, gender, hair, height, name, race, realm, spouse, wikiUrl } =
+      this.props;
 
     return (
       <>
@@ -46,11 +49,9 @@ export default class Product extends Component<ICard, IProps> {
                 {name}
               </Typography>
               <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                {birth}
+                {_id}
               </Typography>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                {death}
-              </Typography>
+              <Typography sx={{ mb: 1.5 }} color="text.secondary"></Typography>
               <Button
                 onClick={() => {
                   this.setState({ openModal: true });
@@ -68,12 +69,42 @@ export default class Product extends Component<ICard, IProps> {
               >
                 <StyledBox>
                   <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum ea
-                    distinctio soluta minima quas debitis, voluptas exercitationem velit consequatur
-                    necessitatibus.
+                    {name}
                   </Typography>
                   <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                    Birth: {birth === '' ? 'Not Found' : birth}
+                  </Typography>
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Death: {death === '' ? 'Not Found' : death}
+                  </Typography>
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Gender: {gender === '' ? 'Not Found' : gender}
+                  </Typography>
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Hair: {hair === '' ? 'Not Found' : hair}
+                  </Typography>
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Height: {height === '' ? 'Not Found' : height}
+                  </Typography>
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Race: {race === '' ? 'Not Found' : race}
+                  </Typography>
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Realm: {realm === '' ? 'Not Found' : realm}
+                  </Typography>
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Spouse: {spouse === '' ? 'Not Found' : spouse}
+                  </Typography>
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    WikiURL:{' '}
+                    <a
+                      href={wikiUrl}
+                      target="_blank"
+                      style={{ padding: '40px 0' }}
+                      rel="noreferrer"
+                    >
+                      {wikiUrl === '' ? 'Not Found' : wikiUrl}
+                    </a>
                   </Typography>
                 </StyledBox>
               </Modal>
