@@ -1,5 +1,5 @@
 export interface ICard {
-  id: number;
+  _id: string;
   birth: string;
   death: string;
   gender: string;
@@ -10,5 +10,4 @@ export interface ICard {
   realm: string;
   spouse: string;
   wikiUrl: string;
-  _id: string;
 }
