@@ -1,5 +1,5 @@
 import TextField from '@mui/material/TextField';
-import React from 'react';
+import React, { useState } from 'react';
 import { IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import styled from 'styled-components';
@@ -10,63 +10,40 @@ const StyledSearchBar = styled(Flex)`
   align-items: center;
 `;
 
-interface IState {
-  value?: string;
-  openedWindow: boolean;
-}
-
 interface IProps {
-  getData: (regex: string) => void;
+  getData: (reg: string) => void;
 }
 
-export class SearchBar extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      value: '',
-      openedWindow: false,
-    };
-    this.handleChange = this.handleChange.bind(this);
-  }
+export const SearchBar: React.FC = ({ getData }: IProps) => {
+  const [inputValue, setInputValue] = useState<string>('');
 
-  handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
-    this.setState({ value: e.target.value });
-    localStorage.setItem('inputValue', e.target.value);
+    setInputValue(e.target.value);
   };
 
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('form submitted ✅');
-    const storageInputValue = localStorage.getItem('inputValue');
-    console.log(storageInputValue);
-    storageInputValue ? this.props.getData(storageInputValue) : console.log('No value in storage');
+    inputValue ? loadData(inputValue) : console.log('No value in storage');
   };
 
-  componentDidMount = (): void => {
-    const storageInputValue = localStorage.getItem('inputValue');
-    !storageInputValue ? console.log('LocalStorage is empty') : console.log(storageInputValue);
+  const loadData = (reg: string) => {
+    getData(reg);
   };
 
-  componentWillUnmount = () => {
-    localStorage.setItem('inputValue', '');
-  };
-
-  render() {
-    return (
-      <form onSubmit={(e) => this.handleSubmit(e)}>
-        <StyledSearchBar>
-          <TextField
-            id="outlined-search"
-            label="Persons of Lords of the Rings"
-            type="search"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleChange(e)}
-          />
-          <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-        </StyledSearchBar>
-      </form>
-    );
-  }
-}
+  return (
+    <form onSubmit={(e) => handleSubmit(e)}>
+      <StyledSearchBar>
+        <TextField
+          id="outlined-search"
+          label="Persons of Lords of the Rings"
+          type="search"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+        />
+        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      </StyledSearchBar>
+    </form>
+  );
+};

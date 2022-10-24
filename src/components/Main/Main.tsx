@@ -1,64 +1,54 @@
-import React, { Component, PropsWithChildren } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Flex } from '../../styles/Flex';
-import { ICard } from './../../interfaces/ICard';
+import { ICard } from '../../interfaces/ICard';
 import axios from 'axios';
 import { SearchBar } from './SearchBar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Product from './Product';
 
-interface ICardProps {
-  products: ICard[];
-  isLoaded: boolean;
-}
+export const Main: React.FC = () => {
+  const [products, setProducts] = useState<ICard[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-export class Main extends Component<PropsWithChildren, ICardProps> {
-  constructor(props: PropsWithChildren) {
-    super(props);
-    this.state = {
-      products: [],
-      isLoaded: false,
-    };
-  }
-
-  getData = async (regex = '') => {
+  const getData = async (regularProp: string | void = '') => {
     let baseUrl = 'https://the-one-api.dev/v2/character/?limit=20';
-    !regex ? baseUrl : (baseUrl = `https://the-one-api.dev/v2/character/?name=/${regex}/i`);
+
+    !regularProp
+      ? baseUrl
+      : (baseUrl = `https://the-one-api.dev/v2/character/?name=/${regularProp}/i`);
+
     const options = {
       method: 'GET',
       url: baseUrl,
       headers: { Authorization: 'Bearer EYud6UvEvgXhu4FWP7yc' },
     };
-
-    try {
-      const response = await axios.request(options);
-      this.setState({ products: response.data.docs, isLoaded: true });
-      console.log(response.data.docs[0]);
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await axios.request(options);
+    setProducts(response.data.docs);
+    setLoading(true);
+    return response.data.docs;
   };
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.getData();
-    }, 1000);
-  }
+  useEffect(() => {
+    const result = Promise.resolve(getData());
+    console.log('Effect Main Render');
+    result.then((json: ICard[]) => {
+      console.log(json);
+    });
+  }, []);
 
-  render() {
-    return (
-      <Flex direction={'column'}>
-        <SearchBar getData={this.getData} />
+  return (
+    <Flex direction={'column'}>
+      <SearchBar getData={getData} />
 
-        {!this.state.isLoaded ? (
-          <CircularProgress color="success" />
-        ) : (
-          <Flex direction={'row'} gap={'50px'} wrap={'wrap'}>
-            {this.state.products.map((card: ICard) => (
-              <Product key={card._id} {...card} />
-            ))}
-          </Flex>
-        )}
-      </Flex>
-    );
-  }
-}
+      {!loading ? (
+        <CircularProgress color="success" />
+      ) : (
+        <Flex direction={'row'} gap={'50px'} wrap={'wrap'}>
+          {products.map((card: ICard) => (
+            <Product key={card._id} {...card} />
+          ))}
+        </Flex>
+      )}
+    </Flex>
+  );
+};
