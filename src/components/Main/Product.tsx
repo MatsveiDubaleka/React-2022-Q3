@@ -17,7 +17,7 @@ const StyledBox = styled(Box)`
   p: 4;
 `;
 
-const Product: React.FC = (props: ICard) => {
+const Product: React.FC<ICard> = (props: ICard) => {
   const [openModal, setOpenModal] = React.useState(false);
   const { _id, birth, death, gender, hair, height, name, race, realm, spouse, wikiUrl } = props;
   return (
