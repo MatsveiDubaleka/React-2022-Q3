@@ -14,7 +14,7 @@ interface IProps {
   getData: (reg: string) => void;
 }
 
-export const SearchBar: React.FC = ({ getData }: IProps) => {
+export const SearchBar = ({ getData }: IProps) => {
   const [inputValue, setInputValue] = useState<string>('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -39,6 +39,13 @@ export const SearchBar: React.FC = ({ getData }: IProps) => {
           label="Persons of Lords of the Rings"
           type="search"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+          sx={{
+            width: '450px',
+            bgcolor: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            outline: 'none',
+          }}
         />
         <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
           <SearchIcon />
