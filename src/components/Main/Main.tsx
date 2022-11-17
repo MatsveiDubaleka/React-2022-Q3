@@ -37,7 +37,7 @@ export const Main: React.FC = () => {
   }, []);
 
   return (
-    <Flex direction={'column'}>
+    <Flex direction={'column'} style={{ paddingBottom: '50px' }}>
       <SearchBar getData={getData} />
 
       {!loading ? (
