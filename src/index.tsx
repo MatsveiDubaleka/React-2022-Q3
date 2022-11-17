@@ -12,6 +12,10 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     font-family: "Roboto Thin", sans-serif;
   }
+
+  body {
+    background-color: #322e2f;
+  }
 `;
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
