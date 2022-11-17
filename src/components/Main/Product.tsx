@@ -22,7 +22,7 @@ const Product: React.FC<ICard> = (props: ICard) => {
   const { _id, birth, death, gender, hair, height, name, race, realm, spouse, wikiUrl } = props;
   return (
     <>
-      <Card raised={true} sx={{ bgcolor: 'background.paper' }}>
+      <Card raised={true} sx={{ bgcolor: '#f3ca20' }}>
         <CardContent>
           <Flex
             width={'100%'}
@@ -42,6 +42,7 @@ const Product: React.FC<ICard> = (props: ICard) => {
               onClick={() => {
                 setOpenModal(true);
               }}
+              sx={{ bgcolor: '#2a363b', color: '#ff847c' }}
             >
               More Info
             </Button>
