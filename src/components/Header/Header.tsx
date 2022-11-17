@@ -2,13 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 import { Flex } from '../../styles/Flex';
 import { Link } from 'react-router-dom';
+import { Context } from 'GlobalContext';
 
 const HeaderWrapper = styled(Flex)`
   width: 100%;
   padding: 2rem;
-  background-color: cadetblue;
+  background: #322e2f;
   justify-content: space-between;
-  color: bisque;
+  color: #f3ca20;
+  border-bottom: 5px solid #f3ca20;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #f3ca20;
+  text-transform: uppercase;
+  font-size: 1.5rem;
 `;
 
 const StyledUl = styled.ul`
@@ -23,28 +32,21 @@ const StyledUl = styled.ul`
 export const Header = () => {
   return (
     <>
-      <header>
+      <header style={{ width: '100%' }}>
         <HeaderWrapper>
+          <Context.Consumer>{({ title }) => <h1>{title}</h1>}</Context.Consumer>
           <StyledUl>
             <li>
-              <Link to="/" style={{ color: 'bisque' }}>
-                HomePage
-              </Link>
+              <StyledLink to="/">HomePage</StyledLink>
             </li>
             <li>
-              <Link to="/about" style={{ color: 'bisque' }}>
-                About
-              </Link>
+              <StyledLink to="/about">About</StyledLink>
             </li>
             <li>
-              <Link to="/random" style={{ color: 'bisque' }}>
-                Random
-              </Link>
+              <StyledLink to="/random">Random</StyledLink>
             </li>
             <li>
-              <Link to="/card" style={{ color: 'bisque' }}>
-                Create Card
-              </Link>
+              <StyledLink to="/card">Create Card</StyledLink>
             </li>
           </StyledUl>
           <h1>Header</h1>
