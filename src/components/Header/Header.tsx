@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Flex } from '../../styles/Flex';
 import { Link } from 'react-router-dom';
-import { Context } from 'GlobalContext';
 
 const HeaderWrapper = styled(Flex)`
   width: 100%;
@@ -34,7 +33,6 @@ export const Header = () => {
     <>
       <header style={{ width: '100%' }}>
         <HeaderWrapper>
-          <Context.Consumer>{({ title }) => <h1>{title}</h1>}</Context.Consumer>
           <StyledUl>
             <li>
               <StyledLink to="/">HomePage</StyledLink>
