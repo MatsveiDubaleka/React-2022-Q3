@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Flex } from '../../styles/Flex';
 import { ICard } from '../../interfaces/ICard';
 import axios from 'axios';
 import { SearchBar } from './SearchBar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Product from './Product';
+import { DataContext } from '../../utils/reducer';
 
 export const Main: React.FC = () => {
   const [products, setProducts] = useState<ICard[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const dataContext = useContext(DataContext);
 
-  const getData = async (regularProp: string | void = '') => {
+  const getData = async (regularProp: string | unknown | void = '') => {
     let baseUrl = 'https://the-one-api.dev/v2/character/?limit=20';
 
     !regularProp
@@ -29,16 +31,15 @@ export const Main: React.FC = () => {
   };
 
   useEffect(() => {
-    const result = Promise.resolve(getData());
-    console.log('Effect Main Render');
+    const result = Promise.resolve(getData(dataContext.state.searchValue));
     result.then((json: ICard[]) => {
       console.log(json);
     });
-  }, []);
+  }, [dataContext]);
 
   return (
     <Flex direction={'column'} style={{ paddingBottom: '50px' }}>
-      <SearchBar getData={getData} />
+      <SearchBar />
 
       {!loading ? (
         <CircularProgress color="success" />
