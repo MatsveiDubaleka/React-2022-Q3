@@ -1,44 +1,36 @@
 import TextField from '@mui/material/TextField';
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import styled from 'styled-components';
 import { Flex } from '../../styles/Flex';
+import { DataContext } from '../../utils/reducer';
 
 const StyledSearchBar = styled(Flex)`
   margin: 20px;
   align-items: center;
 `;
 
-interface IProps {
-  getData: (reg: string) => void;
-}
-
-export const SearchBar = ({ getData }: IProps) => {
-  const [inputValue, setInputValue] = useState<string>('');
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    e.preventDefault();
-    setInputValue(e.target.value);
-  };
+export const SearchBar = () => {
+  const formInput = React.createRef<HTMLFormElement>();
+  const dataContext = useContext(DataContext);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    inputValue ? loadData(inputValue) : console.log('No value in storage');
-  };
-
-  const loadData = (reg: string) => {
-    getData(reg);
+    dataContext.dispatch({
+      payload: formInput.current?.search.value,
+      type: 'setSearchValue',
+    });
   };
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)}>
+    <form action="" ref={formInput} onSubmit={(e) => handleSubmit(e)}>
       <StyledSearchBar>
         <TextField
           id="outlined-search"
           label="Persons of Lords of the Rings"
           type="search"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+          name="search"
           sx={{
             width: '450px',
             bgcolor: '#fff',
